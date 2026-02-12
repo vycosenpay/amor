@@ -42,7 +42,7 @@ fetch('Img/treelove.svg')
           showDedicationText();
           startFloatingObjects();
           showCountdown();
-          playBackgroundMusic(); // Inicia la lógica de música
+          playBackgroundMusic(); 
         }, 1200);
       }, totalDuration);
     }, 50);
@@ -152,7 +152,7 @@ function showCountdown() {
   setInterval(update, 1000);
 }
 
-// --- SECCIÓN DE MÚSICA CORREGIDA ---
+// --- MÚSICA CON NOMBRES CORREGIDOS (music1, music2, music3) ---
 function playBackgroundMusic() {
   let audio = document.getElementById('bg-music');
   if (!audio) {
@@ -161,22 +161,21 @@ function playBackgroundMusic() {
     document.body.appendChild(audio);
   }
 
+  // NOMBRES CORREGIDOS AQUÍ
   const playlist = [
-    'Music/cancion1.mp3',
-    'Music/cancion2.mp3',
-    'Music/cancion3.mp3'
+    'Music/music1.mp3',
+    'Music/music2.mp3',
+    'Music/music3.mp3'
   ];
 
   function getRandomTrack() {
     return playlist[Math.floor(Math.random() * playlist.length)];
   }
 
-  // Carga inicial aleatoria
   let currentTrack = getRandomTrack();
   audio.src = currentTrack;
   audio.volume = 0.6;
 
-  // Cambio de canción al terminar
   audio.addEventListener('ended', () => {
     let nextTrack;
     do {
@@ -187,12 +186,11 @@ function playBackgroundMusic() {
     audio.play();
   });
 
-  // Botón de control
   let btn = document.getElementById('music-btn');
   if (!btn) {
     btn = document.createElement('button');
     btn.id = 'music-btn';
-    btn.style.cssText = "position:fixed; bottom:18px; right:18px; z-index:100; background:rgba(255,255,255,0.8); border:none; border-radius:24px; padding:10px 18px; cursor:pointer; font-size:1.1em;";
+    btn.style.cssText = "position:fixed; bottom:18px; right:18px; z-index:100; background:rgba(255,255,255,0.8); border:none; border-radius:24px; padding:10px 18px; cursor:pointer; font-size:1.1em; box-shadow: 0 2px 10px rgba(0,0,0,0.2);";
     document.body.appendChild(btn);
   }
 
@@ -200,7 +198,6 @@ function playBackgroundMusic() {
     btn.textContent = audio.paused ? '▶️ Música' : '🔊 Música';
   };
 
-  // Función para intentar reproducir (rompe el bloqueo del navegador)
   const startPlay = () => {
     audio.play().then(() => {
       updateBtnText();
@@ -208,7 +205,7 @@ function playBackgroundMusic() {
     }).catch(() => updateBtnText());
   };
 
-  // Intentar sonar y escuchar clic global por si el navegador bloquea
+  // Intentar reproducir y activar con el primer clic del usuario en la pantalla
   startPlay();
   window.addEventListener('click', startPlay, { once: true });
 
@@ -221,6 +218,5 @@ function playBackgroundMusic() {
 }
 
 window.addEventListener('DOMContentLoaded', () => {
-  // La música se llama dentro del flujo del SVG, pero la inicializamos por seguridad
   playBackgroundMusic();
 });
